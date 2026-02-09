@@ -33,3 +33,25 @@ def d2(S: float, K: float, T: float, r: float, sigma: float) -> float:
     N(d2) is the risk-neutral probability that the call finishes in the money.
     """
     return d1(S, K, T, r, sigma) - sigma * math.sqrt(T)
+
+
+def call_price(S: float, K: float, T: float, r: float, sigma: float) -> float:
+    """
+    Black-Scholes European call option price.
+
+    C = S * N(d1) - K * exp(-r*T) * N(d2)
+    """
+    _d1 = d1(S, K, T, r, sigma)
+    _d2 = d2(S, K, T, r, sigma)
+    return S * norm.cdf(_d1) - K * math.exp(-r * T) * norm.cdf(_d2)
+
+
+def put_price(S: float, K: float, T: float, r: float, sigma: float) -> float:
+    """
+    Black-Scholes European put option price.
+
+    P = K * exp(-r*T) * N(-d2) - S * N(-d1)
+    """
+    _d1 = d1(S, K, T, r, sigma)
+    _d2 = d2(S, K, T, r, sigma)
+    return K * math.exp(-r * T) * norm.cdf(-_d2) - S * norm.cdf(-_d1)
